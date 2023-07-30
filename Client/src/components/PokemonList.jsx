@@ -6,7 +6,7 @@ import { Loader } from './Loader';
 export const PokemonList = () => {
 	const { allPokemons, loading, filteredPokemons } =
 		useContext(PokemonContext);
-
+console.log(filteredPokemons?.length, 'lenghttttt');
 	return (
 		<>
 			{loading ? (
@@ -20,6 +20,7 @@ export const PokemonList = () => {
 							))}
 						</>
 					) : (
+						
 						<>
 							{allPokemons.map(pokemon => (
 								<CardPokemon pokemon={pokemon} key={pokemon.id} />

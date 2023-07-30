@@ -6,6 +6,7 @@ export const PokemonProvider = ({ children }) => {
 	const [allPokemons, setAllPokemons] = useState([]);
 	const [globalPokemons, setGlobalPokemons] = useState([]);
 	const [offset, setOffset] = useState(0);
+	const [filteredPokemons, setfilteredPokemons] = useState([]);
 
 	// Utilizar CustomHook - useForm
 	const { valueSearch, onInputChange, onResetForm } = useForm({
@@ -16,8 +17,8 @@ export const PokemonProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 	const [active, setActive] = useState(false);
 
-	// lLamar 50 pokemones a la API
-	const getAllPokemons = async (limit = 50) => {
+	// lLamar 12 pokemones a la API
+	const getAllPokemons = async (limit = 12) => {
 		const baseURL = 'https://pokeapi.co/api/v2/';
 
 		const res = await fetch(
@@ -31,7 +32,6 @@ export const PokemonProvider = ({ children }) => {
 			return data;
 		});
 		const results = await Promise.all(promises);
-
 		setAllPokemons([...allPokemons, ...results]);
 		setLoading(false);
 	};
@@ -41,17 +41,16 @@ export const PokemonProvider = ({ children }) => {
 		const baseURL = 'https://pokeapi.co/api/v2/';
 
 		const res = await fetch(
-			`${baseURL}pokemon?limit=100000&offset=0`
+			`${baseURL}pokemon?limit=200&offset=0`
 		);
 		const data = await res.json();
-
+		
 		const promises = data.results.map(async pokemon => {
 			const res = await fetch(pokemon.url);
 			const data = await res.json();
 			return data;
 		});
 		const results = await Promise.all(promises);
-
 		setGlobalPokemons(results);
 		setLoading(false);
 	};
@@ -66,16 +65,18 @@ export const PokemonProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		getAllPokemons();
-	}, [offset]);
-
-	useEffect(() => {
 		getGlobalPokemons();
 	}, []);
 
+	useEffect(() => {
+		getAllPokemons();
+	}, [offset]);
+
+	
+
 	// BTN CARGAR MÁS
 	const onClickLoadMore = () => {
-		setOffset(offset + 50);
+		setOffset(offset + 12);
 	};
 
 	// Filter Function + State
@@ -102,20 +103,20 @@ export const PokemonProvider = ({ children }) => {
 		shadow: false,
 	});
 
-	const [filteredPokemons, setfilteredPokemons] = useState([]);
+	
 
 	const handleCheckbox = e => {
 		setTypeSelected({
 			...typeSelected,
 			[e.target.name]: e.target.checked,
 		});
-
+		
 		if (e.target.checked) {
 			const filteredResults = globalPokemons.filter(pokemon =>
 				pokemon.types
 					.map(type => type.type.name)
 					.includes(e.target.name)
-			);
+			);	
 			setfilteredPokemons([...filteredPokemons, ...filteredResults]);
 		} else {
 			const filteredResults = filteredPokemons.filter(
@@ -128,6 +129,26 @@ export const PokemonProvider = ({ children }) => {
 		}
 	};
 
+	const sortData = (typeOrder = true) => {
+		let sortPokemon = globalPokemons?.sort(function (a, b) {
+			const nameA = a.name.toLowerCase();
+    		const nameB = b.name.toLowerCase();
+			
+			if (typeOrder) {
+				if (nameA < nameB) return -1;
+				if (nameA > nameB) return 1;
+			} else {
+				if (nameA > nameB) return -1;
+				if (nameA < nameB) return 1
+			}
+			 
+			return 0;
+		  });
+		  
+		  setfilteredPokemons([...sortPokemon]);
+		  setLoading(false);
+	}
+	
 	return (
 		<PokemonContext.Provider
 			value={{
@@ -138,6 +159,7 @@ export const PokemonProvider = ({ children }) => {
 				globalPokemons,
 				getPokemonByID,
 				onClickLoadMore,
+				sortData,
 				// Loader
 				loading,
 				setLoading,

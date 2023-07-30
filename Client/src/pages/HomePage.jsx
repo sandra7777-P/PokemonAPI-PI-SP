@@ -4,7 +4,7 @@ import { PokemonContext } from '../context/PokemonContext';
 
 export const HomePage = () => {
 
-    const {onClickLoadMore, active, setActive} = useContext(PokemonContext)
+    const {onClickLoadMore, active, setActive, sortData, globalPokemons} = useContext(PokemonContext)
 
 	return (
 		<>
@@ -25,6 +25,11 @@ export const HomePage = () => {
 						/>
 					</svg>
 					<span>Filtrar</span>
+				</div>
+				<div>
+				<button className='btn-load-more' onClick={() => sortData()}>Orden Ascendente</button>
+
+				<button className='btn-load-more' onClick={() => sortData(false)}>Orden Descendente</button>
 				</div>
 			</div>
 			<PokemonList />
