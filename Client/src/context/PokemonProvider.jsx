@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from '../hook/useForm';
 import { PokemonContext } from './PokemonContext';
 
 export const PokemonProvider = ({ children }) => {
-	const [allPokemons, setAllPokemons] = useState([]);
 	const [globalPokemons, setGlobalPokemons] = useState([]);
 	const [offset, setOffset] = useState(0);
 	const [filteredPokemons, setfilteredPokemons] = useState([]);
@@ -16,25 +15,6 @@ export const PokemonProvider = ({ children }) => {
 	// Estados para la aplicación simples
 	const [loading, setLoading] = useState(true);
 	const [active, setActive] = useState(false);
-
-	// lLamar 12 pokemones a la API
-	const getAllPokemons = async (limit = 12) => {
-		const baseURL = 'https://pokeapi.co/api/v2/';
-
-		const res = await fetch(
-			`${baseURL}pokemon?limit=${limit}&offset=${offset}`
-		);
-		const data = await res.json();
-
-		const promises = data.results.map(async pokemon => {
-			const res = await fetch(pokemon.url);
-			const data = await res.json();
-			return data;
-		});
-		const results = await Promise.all(promises);
-		setAllPokemons([...allPokemons, ...results]);
-		setLoading(false);
-	};
 
 	// Llamar todos los pokemones
 	const getGlobalPokemons = async () => {
@@ -51,6 +31,7 @@ export const PokemonProvider = ({ children }) => {
 			return data;
 		});
 		const results = await Promise.all(promises);
+		console.log(results, "banderita")
 		setGlobalPokemons(results);
 		setLoading(false);
 	};
@@ -67,12 +48,6 @@ export const PokemonProvider = ({ children }) => {
 	useEffect(() => {
 		getGlobalPokemons();
 	}, []);
-
-	useEffect(() => {
-		getAllPokemons();
-	}, [offset]);
-
-	
 
 	// BTN CARGAR MÁS
 	const onClickLoadMore = () => {
@@ -104,30 +79,29 @@ export const PokemonProvider = ({ children }) => {
 	});
 
 	
-
+	// filtra setea los pokemones en filterpokemons
 	const handleCheckbox = e => {
 		setTypeSelected({
 			...typeSelected,
 			[e.target.name]: e.target.checked,
 		});
-		
-		if (e.target.checked) {
-			const filteredResults = globalPokemons.filter(pokemon =>
-				pokemon.types
-					.map(type => type.type.name)
-					.includes(e.target.name)
-			);	
-			setfilteredPokemons([...filteredPokemons, ...filteredResults]);
-		} else {
-			const filteredResults = filteredPokemons.filter(
-				pokemon =>
-					!pokemon.types
-						.map(type => type.type.name)
-						.includes(e.target.name)
-			);
-			setfilteredPokemons([...filteredResults]);
-		}
+		setPagineSelected(1)
 	};
+
+	//Este setea la pagina en 1 al inicio de la aplicacion
+	const [pagineSelected, setPagineSelected] = useState(1)
+
+	
+	const {pokemonsFilter, size} = useMemo(() => {
+		const checkBoxSelected = Object.values(typeSelected).find((value) => value)
+		const data = globalPokemons.filter((pokemon) => !checkBoxSelected || pokemon.types.find((type) => typeSelected[type.type.name]))
+		const totalPokemonPage = 12; 
+		let initialData = (pagineSelected -1) *  totalPokemonPage;
+		let finalData = pagineSelected * totalPokemonPage;
+
+		return {pokemonsFilter: data.slice(initialData, finalData), size: data.length};
+	}, [globalPokemons, typeSelected, pagineSelected])
+
 
 	const sortData = (typeOrder = true) => {
 		let sortPokemon = globalPokemons?.sort(function (a, b) {
@@ -155,7 +129,6 @@ export const PokemonProvider = ({ children }) => {
 				valueSearch,
 				onInputChange,
 				onResetForm,
-				allPokemons,
 				globalPokemons,
 				getPokemonByID,
 				onClickLoadMore,
@@ -169,6 +142,10 @@ export const PokemonProvider = ({ children }) => {
 				// Filter Container Checkbox
 				handleCheckbox,
 				filteredPokemons,
+				setfilteredPokemons,
+				pokemonsFilter,
+				size,
+				setPagineSelected
 			}}
 		>
 			{children}
