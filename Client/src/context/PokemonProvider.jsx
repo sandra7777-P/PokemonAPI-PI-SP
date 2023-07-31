@@ -31,7 +31,6 @@ export const PokemonProvider = ({ children }) => {
 			return data;
 		});
 		const results = await Promise.all(promises);
-		console.log(results, "banderita")
 		setGlobalPokemons(results);
 		setLoading(false);
 	};
@@ -102,7 +101,7 @@ export const PokemonProvider = ({ children }) => {
 		return {pokemonsFilter: data.slice(initialData, finalData), size: data.length};
 	}, [globalPokemons, typeSelected, pagineSelected])
 
-
+	// Logica de ordenamiento
 	const sortData = (typeOrder = true) => {
 		let sortPokemon = globalPokemons?.sort(function (a, b) {
 			const nameA = a.name.toLowerCase();

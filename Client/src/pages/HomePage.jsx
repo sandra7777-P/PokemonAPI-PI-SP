@@ -9,7 +9,7 @@ export const HomePage = () => {
 
   return (
     <>
-      <div className="container-filter container">
+      <div className="container-filter container" style={{ display: "flex", justifyContent: "center" }}>
         <div className="icon-filter" onClick={() => setActive(!active)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,13 +27,13 @@ export const HomePage = () => {
           </svg>
           <span>Filtrar</span>
         </div>
-        <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <button className="btn-load-more" onClick={() => sortData()}>
-            Orden Ascendente
+            A - Z
           </button>
 
           <button className="btn-load-more" onClick={() => sortData(false)}>
-            Orden Descendente
+            Z - A
           </button>
         </div>
       </div>

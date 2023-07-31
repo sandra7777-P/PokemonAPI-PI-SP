@@ -6,15 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon API</title>
   </head>
-  <button onclick="window.location.href='index.html'" aling="center">Home</button>
   <body>
+    <button onclick="window.location.href='index.html'" style="display: block; margin: 0 auto;">Home</button>
+    <button onclick="window.location.href='index1.html'" style="display: block; margin: 20 auto;">Reiniciar</button>
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      const resetButton = document.getElementById("resetButton");
+      const html1Content = document.getElementById("html1").innerHTML;
 
-  
+      resetButton.addEventListener("click", () => {
+        document.getElementById("html1").innerHTML = html1Content;
+      });
+    </script>
+
     <span id="informacion-pagina"></span>
-    
-
   </body>
 </html>
-

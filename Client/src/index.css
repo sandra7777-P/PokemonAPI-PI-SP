@@ -51,6 +51,7 @@ header {
 	padding: 40px 0;
 }
 
+/* Animación Pokedex */
 .logo img {
 	width: 250px;
 
@@ -71,7 +72,6 @@ header {
 header form {
 	display: flex;
 	align-items: center;
-
 	gap: 15px;
 }
 
@@ -79,7 +79,6 @@ header form {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-
 	border: 1px solid #000000;
 	padding: 15px 20px;
 	border-radius: 25px;
@@ -95,8 +94,8 @@ header form {
 }
 
 .icon-search {
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
 	stroke: #080808;
 }
 
@@ -286,6 +285,15 @@ header form {
 	left: 0;
 }
 
+/* Contenedor de la X */
+.close-container {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	cursor: pointer;
+	font-size: 20px;
+  }
+
 .filter-by-type {
 	display: flex;
 	flex-direction: column;
@@ -441,7 +449,6 @@ Styles of Pokemon Single Page
 .container-btn-load-more{
 	display: flex;
 	justify-content: center;
-
 	margin-bottom: 20px;
 	margin-top: 20px;
 }
@@ -485,7 +492,7 @@ button {
   }
   button.type {
 	border: none;
-	padding: 15px 40px;
+	padding: 15px 30px;
 	font-family: inherit;
 	background-color: var(--color-primary);
 	color: #ffffff;
