@@ -1,11 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Link } from 'react-router-dom';
 import { FilterBar, PokemonList, PaginationPokemons } from "../components";
 import { PokemonContext } from "../context/PokemonContext";
-// import { PaginationPokemons } from "../components/PaginationPokemons";
+import CreatePokemonForm from "../components/CreatePokemonForm";
 
 export const HomePage = () => {
-  const { onClickLoadMore, active, setActive, sortData } =
+  const { active, setActive, sortData } =
     useContext(PokemonContext);
+    const [showForm, setShowForm] = useState(false);
+
+    const toggleForm = () => {
+      setShowForm(!showForm);
+    };
 
   return (
     <>
@@ -27,7 +33,7 @@ export const HomePage = () => {
           </svg>
           <span>Filtrar</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "row", justifyContent: "center" }}>
           <button className="btn-load-more" onClick={() => sortData()}>
             A - Z
           </button>
@@ -36,12 +42,23 @@ export const HomePage = () => {
             Z - A
           </button>
         </div>
+        <div className="container-btn-load-more container">
+        {/* Botón "Crear" para mostrar/ocultar el formulario */}
+        <Link 
+        to= {
+          `/create`
+        }><button onClick={toggleForm}>Crear</button></Link> 
+      </div>
+
+      {/* Mostrar el formulario solo si showForm es verdadero */}
+      {showForm && <CreatePokemonForm />}
       </div>
       <PokemonList />
       <FilterBar />
 	  <PaginationPokemons />
       <div className="container-btn-load-more container">
-        
+
+            
       </div>
     </>
   );
