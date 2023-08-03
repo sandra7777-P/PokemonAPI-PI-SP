@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-
-const { pokemons } = require('../db'); // Asegúrate de que la ruta sea correcta
+const { pokemons } = require('./pokemons'); // Asegúrate de que la ruta sea correcta
 
 // GET | /pokemons
 router.get('/', async (req, res, next) => {

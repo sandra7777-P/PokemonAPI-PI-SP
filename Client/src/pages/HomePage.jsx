@@ -43,7 +43,7 @@ export const HomePage = () => {
           </button>
         </div>
         <div className="container-btn-load-more container">
-        {/* Botón "Crear" para mostrar/ocultar el formulario */}
+        {/* Botón "Crear" para mostrar/ocultar el formulario mostrar en pagina nueva */}
         <Link 
         to= {
           `/create`

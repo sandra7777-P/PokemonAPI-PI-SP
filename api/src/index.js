@@ -17,14 +17,16 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const server = require('./src/app.js');
-const { conn } = require('./src/db.js');
-const pokemons = require('./pokemons');
+
+const server = require('./app.js'); 
+const { conn } = require('./db.js'); 
+const pokemons = require('../pokemons'); 
+const { sequelize } = require("./db.js"); 
 
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
   server.listen(3001, () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+    console.log('http://localhost:3001'); 
   });
 });
