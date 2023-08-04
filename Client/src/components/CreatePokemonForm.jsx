@@ -68,7 +68,7 @@ const CreatePokemonForm = () => {
     }
 
     // Llamar a la función para crear el nuevo pokemon con los datos de formData
-    function createPokemon(formData) {
+    function CreatePokemon(formData) {
       fetch("http://localhost:3001", {
         method: "POST",
         headers: {
@@ -122,9 +122,9 @@ const CreatePokemonForm = () => {
           <div>
           <label>Imagen:</label>
           <input
-            type="file" 
+            type="text" 
             name="image"
-            accept="image/*" 
+            //accept="text" 
             onChange={handleChange}
             required
           />
